@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Sitemap Tool</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    header svg { flex-shrink: 0; }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      font-size: 0.82rem;
+      color: #a0aec0;
+      margin-top: 2px;
+    }
+
+    .app-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid #e2e8f0;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #718096;
+    }
+
+    label {
+      display: block;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 5px;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #a0aec0;
+      margin-bottom: 7px;
+      line-height: 1.4;
+    }
+
+    textarea {
+      width: 100%;
+      height: 260px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      resize: vertical;
+      transition: border-color .15s;
+      color: #1a202c;
+      background: #f7fafc;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #4a6cf7;
+      background: #fff;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .settings-grid .full { grid-column: 1 / -1; }
+
+    .setting-item { display: flex; flex-direction: column; gap: 4px; }
+
+    input[type="text"], input[type="number"], select {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 6px 9px;
+      font-size: 0.8rem;
+      color: #1a202c;
+      background: #f7fafc;
+      transition: border-color .15s;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: #4a6cf7;
+      background: #fff;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 30px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 4px;
+      background: #f7fafc;
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .color-row input[type="color"] { width: 38px; height: 28px; flex-shrink: 0; }
+    .color-row span { font-size: 0.78rem; color: #4a5568; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background .15s, transform .08s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: #4a6cf7;
+      color: #fff;
+      width: 100%;
+    }
+
+    .btn-primary:hover { background: #3a5ce6; }
+
+    .btn-secondary {
+      background: #edf2f7;
+      color: #2d3748;
+      width: 100%;
+    }
+
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .btn-export {
+      background: #38a169;
+      color: #fff;
+      width: 100%;
+    }
+
+    .btn-export:hover { background: #2f855a; }
+
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    /* ── Legend preview ── */
+    .legend-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #4a5568;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    /* ── Canvas area ── */
+    .canvas-area {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .canvas-toolbar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .canvas-toolbar .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .zoom-btn {
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .12s;
+    }
+
+    .zoom-btn:hover { background: #edf2f7; }
+
+    #zoomLabel {
+      font-size: 0.8rem;
+      color: #4a5568;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .canvas-scroll {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+      background:
+        radial-gradient(circle, #c7cfe0 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-color: #edf2f7;
+    }
+
+    #sitemapCanvas {
+      display: block;
+      cursor: grab;
+    }
+
+    #sitemapCanvas:active { cursor: grabbing; }
+
+    .empty-state {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #a0aec0;
+      pointer-events: none;
+    }
+
+    .empty-state svg { opacity: .4; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* ── Error toast ── */
+    #errorToast {
+      display: none;
+      background: #fed7d7;
+      color: #742a2a;
+      border: 1px solid #fc8181;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <rect x="10" y="1" width="8" height="6" rx="1.5" fill="#4a6cf7"/>
+    <rect x="1" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
+    <rect x="10" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
+    <rect x="19" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
+    <rect x="1" y="21" width="8" height="6" rx="1.5" fill="#9ae6b4"/>
+    <rect x="19" y="21" width="8" height="6" rx="1.5" fill="#9ae6b4"/>
+    <line x1="14" y1="7" x2="14" y2="11" stroke="#fff" stroke-width="1.5"/>
+    <line x1="5" y1="7" x2="5" y2="8" stroke="#fff" stroke-width="1.5"/>
+    <line x1="5" y1="8" x2="23" y2="8" stroke="#fff" stroke-width="1.5"/>
+    <line x1="23" y1="8" x2="23" y2="11" stroke="#fff" stroke-width="1.5"/>
+    <line x1="5" y1="17" x2="5" y2="21" stroke="#fff" stroke-width="1.5"/>
+    <line x1="23" y1="17" x2="23" y2="21" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+  <div>
+    <h1>Visual Sitemap Tool</h1>
+    <p>Build and export beautiful sitemap diagrams</p>
+  </div>
+</header>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div>
+      <h2>Pages</h2>
+    </div>
+
+    <div>
+      <label for="pagesInput">Page Hierarchy</label>
+      <p class="hint">Enter one page per line. Use 2-space or tab indentation to nest child pages.</p>
+      <textarea id="pagesInput" spellcheck="false" placeholder="Home
+  About
+    Team
+    History
+  Products
+    Product A
+    Product B
+  Blog
+    Post 1
+    Post 2
+  Contact"></textarea>
+      <div id="errorToast"></div>
+    </div>
+
+    <div>
+      <label for="sitemapTitle">Diagram Title</label>
+      <input type="text" id="sitemapTitle" value="Website Sitemap" style="width:100%" />
+    </div>
+
+    <div class="divider"></div>
+
+    <div>
+      <h2>Appearance</h2>
+    </div>
+
+    <div class="settings-grid">
+      <div class="setting-item full">
+        <label>Box Style</label>
+        <select id="boxStyle">
+          <option value="rounded">Rounded corners</option>
+          <option value="sharp">Sharp corners</option>
+          <option value="pill">Pill</option>
+        </select>
+      </div>
+
+      <div class="setting-item">
+        <label>Box Width</label>
+        <input type="number" id="boxWidth" value="150" min="80" max="300" />
+      </div>
+
+      <div class="setting-item">
+        <label>Box Height</label>
+        <input type="number" id="boxHeight" value="46" min="28" max="120" />
+      </div>
+
+      <div class="setting-item">
+        <label>H-Spacing</label>
+        <input type="number" id="hSpacing" value="24" min="8" max="120" />
+      </div>
+
+      <div class="setting-item">
+        <label>V-Spacing</label>
+        <input type="number" id="vSpacing" value="70" min="30" max="200" />
+      </div>
+
+      <div class="setting-item full">
+        <label>Line Style</label>
+        <select id="lineStyle">
+          <option value="elbow">Elbow (right angle)</option>
+          <option value="straight">Straight diagonal</option>
+          <option value="curve">Curved</option>
+        </select>
+      </div>
+
+      <div class="setting-item full">
+        <label>Font</label>
+        <select id="fontFamily">
+          <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
+          <option value="'Courier New', monospace">Courier New</option>
+          <option value="Georgia, serif">Georgia</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label>Level Colors</label>
+      <div id="colorPickers" class="legend-preview" style="gap:8px; margin-top:4px;"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div>
+      <h2>Legend</h2>
+      <div id="legendPreview" class="legend-preview" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn btn-primary" id="generateBtn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 1l2 4h4l-3 3 1 4-4-2.5L4 12l1-4L2 5h4z"/>
+      </svg>
+      Generate Sitemap
+    </button>
+
+    <button class="btn btn-export" id="exportBtn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 10.5L4 6.5h3V1h2v5.5h3L8 10.5z"/>
+        <path d="M2 12h12v2H2z"/>
+      </svg>
+      Export as JPG
+    </button>
+
+    <button class="btn btn-secondary" id="resetBtn">Reset to Default</button>
+
+  </aside>
+
+  <!-- Canvas area -->
+  <main class="canvas-area">
+    <div class="canvas-toolbar">
+      <span style="font-size:.8rem;color:#4a5568;font-weight:600;">Preview</span>
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span id="zoomLabel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomFit" title="Fit to window" style="width:auto;padding:0 8px;font-size:.75rem;">Fit</button>
+      </div>
+    </div>
+
+    <div class="canvas-scroll" id="canvasScroll">
+      <div class="empty-state" id="emptyState">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="24" y="4" width="16" height="12" rx="3" fill="#a0aec0"/>
+          <rect x="4" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
+          <rect x="24" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
+          <rect x="44" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
+          <rect x="4" y="48" width="16" height="12" rx="3" fill="#cbd5e0"/>
+          <rect x="44" y="48" width="16" height="12" rx="3" fill="#cbd5e0"/>
+          <line x1="32" y1="16" x2="32" y2="26" stroke="#a0aec0" stroke-width="2"/>
+          <line x1="12" y1="16" x2="12" y2="26" stroke="#a0aec0" stroke-width="2"/>
+          <line x1="52" y1="16" x2="52" y2="26" stroke="#a0aec0" stroke-width="2"/>
+          <line x1="12" y1="16" x2="52" y2="16" stroke="#a0aec0" stroke-width="2"/>
+        </svg>
+        <p>Enter pages and click <strong>Generate Sitemap</strong></p>
+      </div>
+      <canvas id="sitemapCanvas"></canvas>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   Config & State
+═══════════════════════════════════════════════════ */
+const DEFAULT_COLORS = [
+  '#1a1a2e', // root
+  '#4a6cf7', // level 1
+  '#63b3ed', // level 2
+  '#9ae6b4', // level 3
+  '#fbd38d', // level 4
+  '#fc8181', // level 5+
+];
+
+const DEFAULT_TEXT_COLORS = [
+  '#ffffff',
+  '#ffffff',
+  '#1a202c',
+  '#1a202c',
+  '#1a202c',
+  '#1a202c',
+];
+
+const DEFAULT_INPUT = `Home
+  About
+    Team
+    History
+  Products
+    Product A
+    Product B
+  Blog
+    Post 1
+    Post 2
+  Contact`;
+
+let zoomLevel = 1;
+let canvasW = 0, canvasH = 0;
+
+/* ═══════════════════════════════════════════════════
+   DOM refs
+═══════════════════════════════════════════════════ */
+const canvas   = document.getElementById('sitemapCanvas');
+const ctx      = canvas.getContext('2d');
+const scroll   = document.getElementById('canvasScroll');
+const empty    = document.getElementById('emptyState');
+const errToast = document.getElementById('errorToast');
+
+/* ═══════════════════════════════════════════════════
+   Color pickers (dynamic, per level)
+═══════════════════════════════════════════════════ */
+let levelColors     = [...DEFAULT_COLORS];
+let levelTextColors = [...DEFAULT_TEXT_COLORS];
+
+function buildColorPickers(maxLevel) {
+  const container = document.getElementById('colorPickers');
+  container.innerHTML = '';
+  const labels = ['Root', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5+'];
+
+  for (let i = 0; i <= Math.min(maxLevel, DEFAULT_COLORS.length - 1); i++) {
+    const row = document.createElement('div');
+    row.className = 'color-row';
+
+    const bgPick = document.createElement('input');
+    bgPick.type = 'color';
+    bgPick.value = levelColors[i] || DEFAULT_COLORS[i] || DEFAULT_COLORS[DEFAULT_COLORS.length - 1];
+    bgPick.title = `${labels[i] || `Level ${i}`} background`;
+    bgPick.addEventListener('input', e => {
+      levelColors[i] = e.target.value;
+      regenerate();
+    });
+
+    const span = document.createElement('span');
+    span.textContent = labels[i] || `Level ${i}`;
+
+    const txtPick = document.createElement('input');
+    txtPick.type = 'color';
+    txtPick.value = levelTextColors[i] || DEFAULT_TEXT_COLORS[i] || '#ffffff';
+    txtPick.title = `${labels[i] || `Level ${i}`} text color`;
+    txtPick.style.marginLeft = 'auto';
+    txtPick.addEventListener('input', e => {
+      levelTextColors[i] = e.target.value;
+      regenerate();
+    });
+
+    const txtLabel = document.createElement('span');
+    txtLabel.textContent = 'T';
+    txtLabel.style.fontSize = '0.7rem';
+    txtLabel.style.color = '#a0aec0';
+
+    row.appendChild(bgPick);
+    row.appendChild(span);
+    row.appendChild(txtLabel);
+    row.appendChild(txtPick);
+    container.appendChild(row);
+  }
+}
+
+function buildLegend(maxLevel) {
+  const container = document.getElementById('legendPreview');
+  container.innerHTML = '';
+  const labels = ['Root / Homepage', 'Top-level pages', 'Sub-pages', 'Nested pages', 'Deep nested', 'Deep nested+'];
+
+  for (let i = 0; i <= Math.min(maxLevel, DEFAULT_COLORS.length - 1); i++) {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+
+    const swatch = document.createElement('div');
+    swatch.className = 'legend-swatch';
+    swatch.style.background = levelColors[i] || DEFAULT_COLORS[i];
+    swatch.style.border = '1px solid #e2e8f0';
+
+    const lbl = document.createElement('span');
+    lbl.textContent = labels[i] || `Level ${i}`;
+
+    item.appendChild(swatch);
+    item.appendChild(lbl);
+    container.appendChild(item);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   Parse indented text → tree
+═══════════════════════════════════════════════════ */
+function parsePages(text) {
+  const lines = text.split('\n').filter(l => l.trim() !== '');
+  if (!lines.length) return null;
+
+  // Detect indent unit
+  function getIndent(line) {
+    let n = 0;
+    for (const ch of line) {
+      if (ch === ' ') n++;
+      else if (ch === '\t') n += 2;
+      else break;
+    }
+    return n;
+  }
+
+  const nodes = lines.map(l => ({ label: l.trim(), indent: getIndent(l), children: [] }));
+
+  // Build tree via stack
+  const root = { label: '__root__', indent: -1, children: [] };
+  const stack = [root];
+
+  for (const node of nodes) {
+    while (stack.length > 1 && stack[stack.length - 1].indent >= node.indent) {
+      stack.pop();
+    }
+    stack[stack.length - 1].children.push(node);
+    stack.push(node);
+  }
+
+  // Assign depth
+  function assignDepth(node, depth) {
+    node.depth = depth;
+    node.children.forEach(c => assignDepth(c, depth + 1));
+  }
+
+  const topLevelChildren = root.children;
+  if (!topLevelChildren.length) return null;
+
+  // If single root item treat it as root
+  let treeRoot;
+  if (topLevelChildren.length === 1) {
+    treeRoot = topLevelChildren[0];
+    assignDepth(treeRoot, 0);
+  } else {
+    // Wrap everything under a virtual root
+    treeRoot = { label: 'Site', indent: -1, children: topLevelChildren, depth: 0 };
+    topLevelChildren.forEach(c => assignDepth(c, 1));
+    treeRoot.depth = 0;
+  }
+
+  return treeRoot;
+}
+
+function maxDepth(node) {
+  if (!node.children.length) return node.depth;
+  return Math.max(...node.children.map(maxDepth));
+}
+
+/* ═══════════════════════════════════════════════════
+   Tree layout (Reingold-Tilford inspired)
+═══════════════════════════════════════════════════ */
+function layoutTree(root, boxW, boxH, hGap, vGap) {
+  const hStep = boxW + hGap;
+
+  function assignX(node) {
+    if (!node.children.length) {
+      node.subtreeW = hStep;
+      node.relX = 0;
+      return;
+    }
+    node.children.forEach(assignX);
+    const totalW = node.children.reduce((s, c) => s + c.subtreeW, 0);
+    node.subtreeW = Math.max(totalW, hStep);
+    node.relX = 0; // will center over children
+  }
+
+  function assignAbsX(node, offsetX) {
+    if (!node.children.length) {
+      node.x = offsetX + node.subtreeW / 2;
+      return;
+    }
+    let cx = offsetX;
+    node.children.forEach(c => {
+      assignAbsX(c, cx);
+      cx += c.subtreeW;
+    });
+    // center parent over children
+    const firstX = node.children[0].x;
+    const lastX  = node.children[node.children.length - 1].x;
+    node.x = (firstX + lastX) / 2;
+  }
+
+  function assignY(node) {
+    node.y = node.depth * (boxH + vGap);
+    node.children.forEach(assignY);
+  }
+
+  assignX(root);
+  assignAbsX(root, 0);
+  assignY(root);
+
+  return root;
+}
+
+/* ═══════════════════════════════════════════════════
+   Draw
+═══════════════════════════════════════════════════ */
+function getColor(depth) {
+  if (depth >= levelColors.length) return levelColors[levelColors.length - 1];
+  return levelColors[depth] || DEFAULT_COLORS[Math.min(depth, DEFAULT_COLORS.length - 1)];
+}
+
+function getTextColor(depth) {
+  if (depth >= levelTextColors.length) return levelTextColors[levelTextColors.length - 1];
+  return levelTextColors[depth] || DEFAULT_TEXT_COLORS[Math.min(depth, DEFAULT_TEXT_COLORS.length - 1)];
+}
+
+function drawRoundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+function getRadius(style, boxH) {
+  if (style === 'rounded') return Math.min(8, boxH / 3);
+  if (style === 'pill')    return boxH / 2;
+  return 0;
+}
+
+function drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, color) {
+  const pBottom = py + boxH;
+  const cTop    = cy;
+
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+
+  if (lineStyle === 'straight') {
+    ctx.moveTo(px, pBottom);
+    ctx.lineTo(cx, cTop);
+  } else if (lineStyle === 'curve') {
+    const midY = (pBottom + cTop) / 2;
+    ctx.moveTo(px, pBottom);
+    ctx.bezierCurveTo(px, midY, cx, midY, cx, cTop);
+  } else {
+    // Elbow
+    const midY = (pBottom + cTop) / 2;
+    ctx.moveTo(px, pBottom);
+    ctx.lineTo(px, midY);
+    ctx.lineTo(cx, midY);
+    ctx.lineTo(cx, cTop);
+  }
+  ctx.stroke();
+}
+
+function wrapText(ctx, text, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  const lines = [];
+  let current = '';
+  for (const w of words) {
+    const test = current ? current + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth - 16 && current) {
+      lines.push(current);
+      current = w;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+function drawSitemap() {
+  const rawText  = document.getElementById('pagesInput').value;
+  const title    = document.getElementById('sitemapTitle').value.trim();
+  const boxW     = parseInt(document.getElementById('boxWidth').value)   || 150;
+  const boxH     = parseInt(document.getElementById('boxHeight').value)  || 46;
+  const hGap     = parseInt(document.getElementById('hSpacing').value)   || 24;
+  const vGap     = parseInt(document.getElementById('vSpacing').value)   || 70;
+  const boxStyle = document.getElementById('boxStyle').value;
+  const lineStyle= document.getElementById('lineStyle').value;
+  const fontFam  = document.getElementById('fontFamily').value;
+
+  // Parse
+  const tree = parsePages(rawText);
+  if (!tree) {
+    showError('No valid pages found. Please enter at least one page.');
+    return;
+  }
+  hideError();
+
+  const depth = maxDepth(tree);
+  buildColorPickers(depth);
+  buildLegend(depth);
+
+  // Layout
+  layoutTree(tree, boxW, boxH, hGap, vGap);
+
+  // Collect all nodes for bounding box
+  const allNodes = [];
+  function collect(n) { allNodes.push(n); n.children.forEach(collect); }
+  collect(tree);
+
+  const minX = Math.min(...allNodes.map(n => n.x - boxW / 2));
+  const maxX = Math.max(...allNodes.map(n => n.x + boxW / 2));
+  const minY = Math.min(...allNodes.map(n => n.y));
+  const maxY = Math.max(...allNodes.map(n => n.y + boxH));
+
+  const PAD   = 48;
+  const TITLE_H = title ? 56 : 20;
+  const LEGEND_H = 36 + (depth + 1) * 24;
+
+  canvasW = (maxX - minX) + PAD * 2;
+  canvasH = (maxY - minY) + PAD * 2 + TITLE_H + LEGEND_H;
+
+  canvas.width  = Math.round(canvasW * zoomLevel);
+  canvas.height = Math.round(canvasH * zoomLevel);
+  canvas.style.width  = canvas.width  + 'px';
+  canvas.style.height = canvas.height + 'px';
+
+  ctx.scale(zoomLevel, zoomLevel);
+
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvasW, canvasH);
+
+  // Title
+  if (title) {
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = `700 20px ${fontFam}`;
+    ctx.textAlign = 'center';
+    ctx.fillText(title, canvasW / 2, PAD + 8);
+  }
+
+  const offsetX = -minX + PAD;
+  const offsetY = -minY + PAD + TITLE_H;
+
+  // Draw connectors first (behind boxes)
+  function drawLines(node) {
+    node.children.forEach(child => {
+      const px = node.x  + offsetX;
+      const py = node.y  + offsetY;
+      const cx = child.x + offsetX;
+      const cy = child.y + offsetY;
+      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#b0bec5');
+      drawLines(child);
+    });
+  }
+  drawLines(tree);
+
+  // Draw boxes
+  function drawNode(node) {
+    const x = node.x + offsetX - boxW / 2;
+    const y = node.y + offsetY;
+    const r = getRadius(boxStyle, boxH);
+    const bgColor  = getColor(node.depth);
+    const txtColor = getTextColor(node.depth);
+
+    // Shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+    ctx.shadowBlur  = 6;
+    ctx.shadowOffsetY = 2;
+
+    ctx.fillStyle = bgColor;
+    drawRoundedRect(ctx, x, y, boxW, boxH, r);
+    ctx.fill();
+    ctx.restore();
+
+    // Border
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    drawRoundedRect(ctx, x, y, boxW, boxH, r);
+    ctx.stroke();
+
+    // Text
+    ctx.fillStyle = txtColor;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const fontSize = Math.max(11, Math.min(13, boxH * 0.28));
+    ctx.font = `600 ${fontSize}px ${fontFam}`;
+    const lines = wrapText(ctx, node.label, boxW, fontSize * 1.4);
+    const lineH = fontSize * 1.35;
+    const totalTextH = lines.length * lineH;
+    lines.forEach((line, i) => {
+      ctx.fillText(
+        line,
+        node.x + offsetX,
+        y + boxH / 2 - totalTextH / 2 + lineH * i + lineH / 2,
+        boxW - 10
+      );
+    });
+
+    node.children.forEach(drawNode);
+  }
+  drawNode(tree);
+
+  // Legend
+  const legY = canvasH - LEGEND_H + 12;
+  const legLabels = ['Root / Homepage', 'Top-level pages', 'Sub-pages', 'Nested pages', 'Deep nested', 'Deep nested+'];
+  const swW = 24, swH = 14;
+  const numColors = Math.min(depth + 1, DEFAULT_COLORS.length);
+  const totalLegW = numColors * 150;
+  let legX = (canvasW - totalLegW) / 2;
+
+  ctx.fillStyle = '#718096';
+  ctx.font = `600 10px ${fontFam}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText('LEGEND', legX, legY - 2);
+
+  for (let i = 0; i < numColors; i++) {
+    const iy = legY + 10 + i * 22;
+    const r2 = getRadius(boxStyle, swH);
+    ctx.fillStyle = getColor(i);
+    drawRoundedRect(ctx, legX, iy, swW, swH, r2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    drawRoundedRect(ctx, legX, iy, swW, swH, r2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#4a5568';
+    ctx.font = `500 10.5px ${fontFam}`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(legLabels[i] || `Level ${i}`, legX + swW + 7, iy + swH / 2);
+  }
+
+  // Show canvas, hide empty state
+  empty.style.display = 'none';
+  canvas.style.display = 'block';
+}
+
+/* ═══════════════════════════════════════════════════
+   Error helpers
+═══════════════════════════════════════════════════ */
+function showError(msg) {
+  errToast.style.display = 'block';
+  errToast.textContent = msg;
+}
+
+function hideError() {
+  errToast.style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════════
+   Export as JPG
+═══════════════════════════════════════════════════ */
+function exportJPG() {
+  if (canvas.width === 0 || !canvas.style.display || canvas.style.display === 'none') {
+    showError('Generate a sitemap first before exporting.');
+    return;
+  }
+  // Create an offscreen canvas with white background (JPG doesn't support alpha)
+  const off = document.createElement('canvas');
+  off.width  = canvas.width;
+  off.height = canvas.height;
+  const oc = off.getContext('2d');
+  oc.fillStyle = '#ffffff';
+  oc.fillRect(0, 0, off.width, off.height);
+  oc.drawImage(canvas, 0, 0);
+
+  const link = document.createElement('a');
+  const title = document.getElementById('sitemapTitle').value.trim() || 'sitemap';
+  const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  link.download = `${slug}.jpg`;
+  link.href = off.toDataURL('image/jpeg', 0.95);
+  link.click();
+}
+
+/* ═══════════════════════════════════════════════════
+   Zoom
+═══════════════════════════════════════════════════ */
+function setZoom(z) {
+  zoomLevel = Math.max(0.25, Math.min(3, z));
+  document.getElementById('zoomLabel').textContent = Math.round(zoomLevel * 100) + '%';
+  if (canvas.style.display !== 'none') regenerate();
+}
+
+function fitToWindow() {
+  if (!canvasW || !canvasH) return;
+  const availW = scroll.clientWidth  - 48;
+  const availH = scroll.clientHeight - 48;
+  const fitZ = Math.min(availW / canvasW, availH / canvasH, 1);
+  setZoom(Math.round(fitZ * 20) / 20);
+}
+
+document.getElementById('zoomIn') .addEventListener('click', () => setZoom(zoomLevel + 0.1));
+document.getElementById('zoomOut').addEventListener('click', () => setZoom(zoomLevel - 0.1));
+document.getElementById('zoomFit').addEventListener('click', fitToWindow);
+
+/* ═══════════════════════════════════════════════════
+   Regenerate helper (re-draw with current settings)
+═══════════════════════════════════════════════════ */
+function regenerate() {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  drawSitemap();
+}
+
+/* ═══════════════════════════════════════════════════
+   Reset
+═══════════════════════════════════════════════════ */
+function resetDefaults() {
+  document.getElementById('pagesInput').value = DEFAULT_INPUT;
+  document.getElementById('sitemapTitle').value = 'Website Sitemap';
+  document.getElementById('boxWidth').value    = 150;
+  document.getElementById('boxHeight').value   = 46;
+  document.getElementById('hSpacing').value    = 24;
+  document.getElementById('vSpacing').value    = 70;
+  document.getElementById('boxStyle').value    = 'rounded';
+  document.getElementById('lineStyle').value   = 'elbow';
+  document.getElementById('fontFamily').value  = "'Segoe UI', Arial, sans-serif";
+  levelColors     = [...DEFAULT_COLORS];
+  levelTextColors = [...DEFAULT_TEXT_COLORS];
+  zoomLevel = 1;
+  document.getElementById('zoomLabel').textContent = '100%';
+  regenerate();
+}
+
+/* ═══════════════════════════════════════════════════
+   Wire up buttons
+═══════════════════════════════════════════════════ */
+document.getElementById('generateBtn').addEventListener('click', regenerate);
+document.getElementById('exportBtn')  .addEventListener('click', exportJPG);
+document.getElementById('resetBtn')   .addEventListener('click', resetDefaults);
+
+// Live re-render on setting changes
+['boxWidth','boxHeight','hSpacing','vSpacing','boxStyle','lineStyle','fontFamily','sitemapTitle']
+  .forEach(id => document.getElementById(id).addEventListener('change', regenerate));
+
+/* ═══════════════════════════════════════════════════
+   Init
+═══════════════════════════════════════════════════ */
+canvas.style.display = 'none';
+buildColorPickers(3);
+buildLegend(3);
+
+// Auto-generate on load
+window.addEventListener('load', () => {
+  document.getElementById('pagesInput').value = DEFAULT_INPUT;
+  regenerate();
+});
+</script>
+</body>
+</html>
