@@ -270,9 +270,9 @@
       overflow: auto;
       position: relative;
       background:
-        radial-gradient(circle, #1e2535 1px, transparent 1px);
+        radial-gradient(circle, #c8cdd6 1px, transparent 1px);
       background-size: 24px 24px;
-      background-color: #0d1117;
+      background-color: #f4f4f1;
     }
 
     #sitemapCanvas {
@@ -860,12 +860,12 @@ function drawSitemap() {
 
   ctx.scale(zoomLevel, zoomLevel);
 
-  // Dark background
-  ctx.fillStyle = '#13161f';
+  // Light off-white background
+  ctx.fillStyle = '#f4f4f1';
   ctx.fillRect(0, 0, canvasW, canvasH);
 
   // Subtle grid pattern on canvas
-  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.strokeStyle = 'rgba(0,0,0,0.04)';
   ctx.lineWidth = 1;
   for (let gx = 0; gx < canvasW; gx += 24) {
     ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvasH); ctx.stroke();
@@ -876,7 +876,7 @@ function drawSitemap() {
 
   // Title
   if (title) {
-    ctx.fillStyle = '#f1f5f9';
+    ctx.fillStyle = '#1e293b';
     ctx.font = `700 20px ${fontFam}`;
     ctx.textAlign = 'center';
     ctx.fillText(title, canvasW / 2, PAD + 8);
@@ -892,7 +892,7 @@ function drawSitemap() {
       const py = node.y  + offsetY;
       const cx = child.x + offsetX;
       const cy = child.y + offsetY;
-      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#374151');
+      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#94a3b8');
       drawLines(child);
     });
   }
@@ -953,7 +953,7 @@ function drawSitemap() {
   const totalLegW = numColors * 150;
   let legX = (canvasW - totalLegW) / 2;
 
-  ctx.fillStyle = '#4b5563';
+  ctx.fillStyle = '#64748b';
   ctx.font = `600 10px ${fontFam}`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
@@ -970,7 +970,7 @@ function drawSitemap() {
     drawRoundedRect(ctx, legX, iy, swW, swH, r2);
     ctx.stroke();
 
-    ctx.fillStyle = '#9ca3af';
+    ctx.fillStyle = '#475569';
     ctx.font = `500 10.5px ${fontFam}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
