@@ -489,21 +489,21 @@ Contact"></textarea>
    Config & State
 ═══════════════════════════════════════════════════ */
 const DEFAULT_COLORS = [
-  '#6366f1', // root   - indigo
-  '#8b5cf6', // level 1 - violet
-  '#06b6d4', // level 2 - cyan
-  '#10b981', // level 3 - emerald
-  '#f59e0b', // level 4 - amber
-  '#ef4444', // level 5+ - red
+  '#1e1e1e', // root   - near black
+  '#c8c4be', // level 1 - warm mid gray
+  '#dedad5', // level 2 - lighter warm gray
+  '#eceae6', // level 3 - very light warm gray
+  '#f4f2ef', // level 4 - near white warm
+  '#faf9f7', // level 5+ - almost white
 ];
 
 const DEFAULT_TEXT_COLORS = [
-  '#ffffff',
-  '#ffffff',
-  '#ffffff',
-  '#ffffff',
-  '#1a202c',
-  '#ffffff',
+  '#ffffff', // root
+  '#1e1e1e', // level 1
+  '#1e1e1e', // level 2
+  '#1e1e1e', // level 3
+  '#1e1e1e', // level 4
+  '#1e1e1e', // level 5+
 ];
 
 const DEFAULT_INPUT = `Home
@@ -593,7 +593,7 @@ function buildLegend(maxLevel) {
     const swatch = document.createElement('div');
     swatch.className = 'legend-swatch';
     swatch.style.background = levelColors[i] || DEFAULT_COLORS[i];
-    swatch.style.border = '1px solid #2d3748';
+    swatch.style.border = '1px solid rgba(0,0,0,0.18)';
 
     const lbl = document.createElement('span');
     lbl.textContent = labels[i] || `Level ${i}`;
@@ -860,23 +860,13 @@ function drawSitemap() {
 
   ctx.scale(zoomLevel, zoomLevel);
 
-  // Dark background
-  ctx.fillStyle = '#13161f';
+  // Off-white background
+  ctx.fillStyle = '#f2efe9';
   ctx.fillRect(0, 0, canvasW, canvasH);
-
-  // Subtle grid pattern on canvas
-  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-  ctx.lineWidth = 1;
-  for (let gx = 0; gx < canvasW; gx += 24) {
-    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvasH); ctx.stroke();
-  }
-  for (let gy = 0; gy < canvasH; gy += 24) {
-    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvasW, gy); ctx.stroke();
-  }
 
   // Title
   if (title) {
-    ctx.fillStyle = '#f1f5f9';
+    ctx.fillStyle = '#1a1817';
     ctx.font = `700 20px ${fontFam}`;
     ctx.textAlign = 'center';
     ctx.fillText(title, canvasW / 2, PAD + 8);
@@ -892,7 +882,7 @@ function drawSitemap() {
       const py = node.y  + offsetY;
       const cx = child.x + offsetX;
       const cy = child.y + offsetY;
-      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#374151');
+      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#a09488');
       drawLines(child);
     });
   }
@@ -906,19 +896,19 @@ function drawSitemap() {
     const bgColor  = getColor(node.depth);
     const txtColor = getTextColor(node.depth);
 
-    // Glow / shadow
+    // Soft drop shadow
     ctx.save();
-    ctx.shadowColor = bgColor;
-    ctx.shadowBlur  = 10;
-    ctx.shadowOffsetY = 0;
+    ctx.shadowColor = 'rgba(0,0,0,0.13)';
+    ctx.shadowBlur  = 8;
+    ctx.shadowOffsetY = 3;
 
     ctx.fillStyle = bgColor;
     drawRoundedRect(ctx, x, y, boxW, boxH, r);
     ctx.fill();
     ctx.restore();
 
-    // Inner border
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    // Subtle border
+    ctx.strokeStyle = 'rgba(0,0,0,0.10)';
     ctx.lineWidth = 1;
     drawRoundedRect(ctx, x, y, boxW, boxH, r);
     ctx.stroke();
@@ -953,7 +943,7 @@ function drawSitemap() {
   const totalLegW = numColors * 150;
   let legX = (canvasW - totalLegW) / 2;
 
-  ctx.fillStyle = '#4b5563';
+  ctx.fillStyle = '#8a8480';
   ctx.font = `600 10px ${fontFam}`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
@@ -965,12 +955,12 @@ function drawSitemap() {
     ctx.fillStyle = getColor(i);
     drawRoundedRect(ctx, legX, iy, swW, swH, r2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.10)';
     ctx.lineWidth = 1;
     drawRoundedRect(ctx, legX, iy, swW, swH, r2);
     ctx.stroke();
 
-    ctx.fillStyle = '#9ca3af';
+    ctx.fillStyle = '#4a4540';
     ctx.font = `500 10.5px ${fontFam}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
@@ -1006,7 +996,7 @@ function exportJPG() {
   off.width  = canvas.width;
   off.height = canvas.height;
   const oc = off.getContext('2d');
-  oc.fillStyle = '#13161f';
+  oc.fillStyle = '#f2efe9';
   oc.fillRect(0, 0, off.width, off.height);
   oc.drawImage(canvas, 0, 0);
 
