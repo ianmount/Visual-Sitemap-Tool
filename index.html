@@ -9,19 +9,20 @@
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f0f2f5;
-      color: #1a1a2e;
+      background: #0d1117;
+      color: #e2e8f0;
       min-height: 100vh;
     }
 
     header {
-      background: #1a1a2e;
-      color: #fff;
+      background: #161b27;
+      color: #e2e8f0;
       padding: 18px 32px;
       display: flex;
       align-items: center;
       gap: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      border-bottom: 1px solid #252d3d;
     }
 
     header svg { flex-shrink: 0; }
@@ -34,20 +35,20 @@
 
     header p {
       font-size: 0.82rem;
-      color: #a0aec0;
+      color: #64748b;
       margin-top: 2px;
     }
 
     .app-layout {
       display: grid;
       grid-template-columns: 320px 1fr;
-      min-height: calc(100vh - 64px);
+      height: calc(100vh - 65px);
     }
 
     /* ── Sidebar ── */
     .sidebar {
-      background: #fff;
-      border-right: 1px solid #e2e8f0;
+      background: #161b27;
+      border-right: 1px solid #252d3d;
       padding: 24px 20px;
       display: flex;
       flex-direction: column;
@@ -60,43 +61,43 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #718096;
+      color: #64748b;
     }
 
     label {
       display: block;
       font-size: 0.83rem;
       font-weight: 600;
-      color: #2d3748;
+      color: #94a3b8;
       margin-bottom: 5px;
     }
 
     .hint {
       font-size: 0.75rem;
-      color: #a0aec0;
+      color: #64748b;
       margin-bottom: 7px;
       line-height: 1.4;
     }
 
     textarea {
       width: 100%;
-      height: 260px;
-      border: 1.5px solid #e2e8f0;
+      height: 240px;
+      border: 1.5px solid #2d3748;
       border-radius: 8px;
       padding: 10px 12px;
       font-family: 'Courier New', monospace;
       font-size: 0.8rem;
       line-height: 1.55;
       resize: vertical;
-      transition: border-color .15s;
-      color: #1a202c;
-      background: #f7fafc;
+      transition: border-color .15s, background .15s;
+      color: #e2e8f0;
+      background: #1e2535;
     }
 
     textarea:focus {
       outline: none;
-      border-color: #4a6cf7;
-      background: #fff;
+      border-color: #6366f1;
+      background: #252f42;
     }
 
     .settings-grid {
@@ -110,29 +111,34 @@
     .setting-item { display: flex; flex-direction: column; gap: 4px; }
 
     input[type="text"], input[type="number"], select {
-      border: 1.5px solid #e2e8f0;
+      border: 1.5px solid #2d3748;
       border-radius: 6px;
       padding: 6px 9px;
       font-size: 0.8rem;
-      color: #1a202c;
-      background: #f7fafc;
-      transition: border-color .15s;
+      color: #e2e8f0;
+      background: #1e2535;
+      transition: border-color .15s, background .15s;
     }
 
     input[type="text"]:focus, input[type="number"]:focus, select:focus {
       outline: none;
-      border-color: #4a6cf7;
-      background: #fff;
+      border-color: #6366f1;
+      background: #252f42;
+    }
+
+    select option {
+      background: #1e2535;
+      color: #e2e8f0;
     }
 
     input[type="color"] {
       width: 100%;
       height: 30px;
-      border: 1.5px solid #e2e8f0;
+      border: 1.5px solid #2d3748;
       border-radius: 6px;
       cursor: pointer;
       padding: 2px 4px;
-      background: #f7fafc;
+      background: #1e2535;
     }
 
     .color-row {
@@ -142,7 +148,7 @@
     }
 
     .color-row input[type="color"] { width: 38px; height: 28px; flex-shrink: 0; }
-    .color-row span { font-size: 0.78rem; color: #4a5568; }
+    .color-row span { font-size: 0.78rem; color: #94a3b8; }
 
     .btn {
       display: inline-flex;
@@ -161,32 +167,33 @@
     .btn:active { transform: scale(0.97); }
 
     .btn-primary {
-      background: #4a6cf7;
+      background: #6366f1;
       color: #fff;
       width: 100%;
     }
 
-    .btn-primary:hover { background: #3a5ce6; }
+    .btn-primary:hover { background: #5254cc; }
 
     .btn-secondary {
-      background: #edf2f7;
-      color: #2d3748;
+      background: #1e2535;
+      color: #94a3b8;
       width: 100%;
+      border: 1px solid #2d3748;
     }
 
-    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-secondary:hover { background: #252f42; }
 
     .btn-export {
-      background: #38a169;
+      background: #10b981;
       color: #fff;
       width: 100%;
     }
 
-    .btn-export:hover { background: #2f855a; }
+    .btn-export:hover { background: #059669; }
 
     .divider {
       height: 1px;
-      background: #e2e8f0;
+      background: #252d3d;
     }
 
     /* ── Legend preview ── */
@@ -201,7 +208,7 @@
       align-items: center;
       gap: 8px;
       font-size: 0.78rem;
-      color: #4a5568;
+      color: #94a3b8;
     }
 
     .legend-swatch {
@@ -218,13 +225,14 @@
     }
 
     .canvas-toolbar {
-      background: #fff;
-      border-bottom: 1px solid #e2e8f0;
+      background: #161b27;
+      border-bottom: 1px solid #252d3d;
       padding: 10px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      flex-shrink: 0;
     }
 
     .canvas-toolbar .zoom-controls {
@@ -236,9 +244,10 @@
     .zoom-btn {
       width: 28px;
       height: 28px;
-      border: 1.5px solid #e2e8f0;
+      border: 1.5px solid #2d3748;
       border-radius: 6px;
-      background: #fff;
+      background: #1e2535;
+      color: #94a3b8;
       cursor: pointer;
       font-size: 1rem;
       display: flex;
@@ -247,11 +256,11 @@
       transition: background .12s;
     }
 
-    .zoom-btn:hover { background: #edf2f7; }
+    .zoom-btn:hover { background: #252f42; color: #e2e8f0; }
 
     #zoomLabel {
       font-size: 0.8rem;
-      color: #4a5568;
+      color: #64748b;
       min-width: 40px;
       text-align: center;
     }
@@ -261,9 +270,9 @@
       overflow: auto;
       position: relative;
       background:
-        radial-gradient(circle, #c7cfe0 1px, transparent 1px);
+        radial-gradient(circle, #1e2535 1px, transparent 1px);
       background-size: 24px 24px;
-      background-color: #edf2f7;
+      background-color: #0d1117;
     }
 
     #sitemapCanvas {
@@ -281,22 +290,24 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      color: #a0aec0;
+      color: #4a5568;
       pointer-events: none;
     }
 
-    .empty-state svg { opacity: .4; }
-    .empty-state p { font-size: 0.9rem; }
+    .empty-state svg { opacity: .35; }
+    .empty-state p { font-size: 0.9rem; color: #64748b; }
+    .empty-state strong { color: #94a3b8; }
 
     /* ── Error toast ── */
     #errorToast {
       display: none;
-      background: #fed7d7;
-      color: #742a2a;
-      border: 1px solid #fc8181;
+      background: #2d1515;
+      color: #fc8181;
+      border: 1px solid #742a2a;
       border-radius: 8px;
       padding: 9px 13px;
       font-size: 0.8rem;
+      margin-top: 6px;
     }
   </style>
 </head>
@@ -304,18 +315,18 @@
 
 <header>
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <rect x="10" y="1" width="8" height="6" rx="1.5" fill="#4a6cf7"/>
-    <rect x="1" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
-    <rect x="10" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
-    <rect x="19" y="11" width="8" height="6" rx="1.5" fill="#63b3ed"/>
-    <rect x="1" y="21" width="8" height="6" rx="1.5" fill="#9ae6b4"/>
-    <rect x="19" y="21" width="8" height="6" rx="1.5" fill="#9ae6b4"/>
-    <line x1="14" y1="7" x2="14" y2="11" stroke="#fff" stroke-width="1.5"/>
-    <line x1="5" y1="7" x2="5" y2="8" stroke="#fff" stroke-width="1.5"/>
-    <line x1="5" y1="8" x2="23" y2="8" stroke="#fff" stroke-width="1.5"/>
-    <line x1="23" y1="8" x2="23" y2="11" stroke="#fff" stroke-width="1.5"/>
-    <line x1="5" y1="17" x2="5" y2="21" stroke="#fff" stroke-width="1.5"/>
-    <line x1="23" y1="17" x2="23" y2="21" stroke="#fff" stroke-width="1.5"/>
+    <rect x="10" y="1" width="8" height="6" rx="1.5" fill="#6366f1"/>
+    <rect x="1" y="11" width="8" height="6" rx="1.5" fill="#8b5cf6"/>
+    <rect x="10" y="11" width="8" height="6" rx="1.5" fill="#8b5cf6"/>
+    <rect x="19" y="11" width="8" height="6" rx="1.5" fill="#8b5cf6"/>
+    <rect x="1" y="21" width="8" height="6" rx="1.5" fill="#06b6d4"/>
+    <rect x="19" y="21" width="8" height="6" rx="1.5" fill="#06b6d4"/>
+    <line x1="14" y1="7" x2="14" y2="11" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="5" y1="7" x2="5" y2="8" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="5" y1="8" x2="23" y2="8" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="23" y1="8" x2="23" y2="11" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="5" y1="17" x2="5" y2="21" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="23" y1="17" x2="23" y2="21" stroke="#94a3b8" stroke-width="1.5"/>
   </svg>
   <div>
     <h1>Visual Sitemap Tool</h1>
@@ -333,18 +344,15 @@
 
     <div>
       <label for="pagesInput">Page Hierarchy</label>
-      <p class="hint">Enter one page per line. Use 2-space or tab indentation to nest child pages.</p>
+      <p class="hint">First line is the root page. Use <code style="background:#1e2535;padding:1px 4px;border-radius:3px;font-size:0.72rem;">-</code> before a name to make it a sub-page, or indent with spaces/tabs for deeper nesting.</p>
       <textarea id="pagesInput" spellcheck="false" placeholder="Home
-  About
-    Team
-    History
-  Products
-    Product A
-    Product B
-  Blog
-    Post 1
-    Post 2
-  Contact"></textarea>
+About
+-Team
+-History
+Services
+-Landscaping
+-Tree Trimming
+Contact"></textarea>
       <div id="errorToast"></div>
     </div>
 
@@ -381,12 +389,12 @@
 
       <div class="setting-item">
         <label>H-Spacing</label>
-        <input type="number" id="hSpacing" value="24" min="8" max="120" />
+        <input type="number" id="hSpacing" value="16" min="8" max="120" />
       </div>
 
       <div class="setting-item">
         <label>V-Spacing</label>
-        <input type="number" id="vSpacing" value="70" min="30" max="200" />
+        <input type="number" id="vSpacing" value="60" min="30" max="200" />
       </div>
 
       <div class="setting-item full">
@@ -446,7 +454,7 @@
   <!-- Canvas area -->
   <main class="canvas-area">
     <div class="canvas-toolbar">
-      <span style="font-size:.8rem;color:#4a5568;font-weight:600;">Preview</span>
+      <span style="font-size:.8rem;color:#64748b;font-weight:600;">Preview</span>
       <div class="zoom-controls">
         <button class="zoom-btn" id="zoomOut">−</button>
         <span id="zoomLabel">100%</span>
@@ -458,16 +466,16 @@
     <div class="canvas-scroll" id="canvasScroll">
       <div class="empty-state" id="emptyState">
         <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-          <rect x="24" y="4" width="16" height="12" rx="3" fill="#a0aec0"/>
-          <rect x="4" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
-          <rect x="24" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
-          <rect x="44" y="26" width="16" height="12" rx="3" fill="#a0aec0"/>
-          <rect x="4" y="48" width="16" height="12" rx="3" fill="#cbd5e0"/>
-          <rect x="44" y="48" width="16" height="12" rx="3" fill="#cbd5e0"/>
-          <line x1="32" y1="16" x2="32" y2="26" stroke="#a0aec0" stroke-width="2"/>
-          <line x1="12" y1="16" x2="12" y2="26" stroke="#a0aec0" stroke-width="2"/>
-          <line x1="52" y1="16" x2="52" y2="26" stroke="#a0aec0" stroke-width="2"/>
-          <line x1="12" y1="16" x2="52" y2="16" stroke="#a0aec0" stroke-width="2"/>
+          <rect x="24" y="4" width="16" height="12" rx="3" fill="#374151"/>
+          <rect x="4" y="26" width="16" height="12" rx="3" fill="#374151"/>
+          <rect x="24" y="26" width="16" height="12" rx="3" fill="#374151"/>
+          <rect x="44" y="26" width="16" height="12" rx="3" fill="#374151"/>
+          <rect x="4" y="48" width="16" height="12" rx="3" fill="#252d3d"/>
+          <rect x="44" y="48" width="16" height="12" rx="3" fill="#252d3d"/>
+          <line x1="32" y1="16" x2="32" y2="26" stroke="#374151" stroke-width="2"/>
+          <line x1="12" y1="16" x2="12" y2="26" stroke="#374151" stroke-width="2"/>
+          <line x1="52" y1="16" x2="52" y2="26" stroke="#374151" stroke-width="2"/>
+          <line x1="12" y1="16" x2="52" y2="16" stroke="#374151" stroke-width="2"/>
         </svg>
         <p>Enter pages and click <strong>Generate Sitemap</strong></p>
       </div>
@@ -481,34 +489,34 @@
    Config & State
 ═══════════════════════════════════════════════════ */
 const DEFAULT_COLORS = [
-  '#1a1a2e', // root
-  '#4a6cf7', // level 1
-  '#63b3ed', // level 2
-  '#9ae6b4', // level 3
-  '#fbd38d', // level 4
-  '#fc8181', // level 5+
+  '#6366f1', // root   - indigo
+  '#8b5cf6', // level 1 - violet
+  '#06b6d4', // level 2 - cyan
+  '#10b981', // level 3 - emerald
+  '#f59e0b', // level 4 - amber
+  '#ef4444', // level 5+ - red
 ];
 
 const DEFAULT_TEXT_COLORS = [
   '#ffffff',
   '#ffffff',
+  '#ffffff',
+  '#ffffff',
   '#1a202c',
-  '#1a202c',
-  '#1a202c',
-  '#1a202c',
+  '#ffffff',
 ];
 
 const DEFAULT_INPUT = `Home
-  About
-    Team
-    History
-  Products
-    Product A
-    Product B
-  Blog
-    Post 1
-    Post 2
-  Contact`;
+About
+-Team
+-History
+Services
+-Landscaping
+-Tree Trimming
+Blog
+-Post 1
+-Post 2
+Contact`;
 
 let zoomLevel = 1;
 let canvasW = 0, canvasH = 0;
@@ -548,6 +556,7 @@ function buildColorPickers(maxLevel) {
 
     const span = document.createElement('span');
     span.textContent = labels[i] || `Level ${i}`;
+    span.style.color = '#94a3b8';
 
     const txtPick = document.createElement('input');
     txtPick.type = 'color';
@@ -560,9 +569,9 @@ function buildColorPickers(maxLevel) {
     });
 
     const txtLabel = document.createElement('span');
-    txtLabel.textContent = 'T';
-    txtLabel.style.fontSize = '0.7rem';
-    txtLabel.style.color = '#a0aec0';
+    txtLabel.textContent = 'Aa';
+    txtLabel.style.fontSize = '0.68rem';
+    txtLabel.style.color = '#64748b';
 
     row.appendChild(bgPick);
     row.appendChild(span);
@@ -584,10 +593,11 @@ function buildLegend(maxLevel) {
     const swatch = document.createElement('div');
     swatch.className = 'legend-swatch';
     swatch.style.background = levelColors[i] || DEFAULT_COLORS[i];
-    swatch.style.border = '1px solid #e2e8f0';
+    swatch.style.border = '1px solid #2d3748';
 
     const lbl = document.createElement('span');
     lbl.textContent = labels[i] || `Level ${i}`;
+    lbl.style.color = '#94a3b8';
 
     item.appendChild(swatch);
     item.appendChild(lbl);
@@ -596,24 +606,56 @@ function buildLegend(maxLevel) {
 }
 
 /* ═══════════════════════════════════════════════════
-   Parse indented text → tree
+   Parse pages text → tree
+   - First line is always the root page
+   - Lines starting with - are sub-pages of the preceding non-dash line
+   - Subsequent top-level (indent=0) lines become children of root
+   - Standard indentation (spaces/tabs) also works for deeper nesting
 ═══════════════════════════════════════════════════ */
 function parsePages(text) {
-  const lines = text.split('\n').filter(l => l.trim() !== '');
-  if (!lines.length) return null;
+  const rawLines = text.split('\n').filter(l => l.trim() !== '');
+  if (!rawLines.length) return null;
 
-  // Detect indent unit
-  function getIndent(line) {
+  function countIndent(line) {
     let n = 0;
     for (const ch of line) {
-      if (ch === ' ') n++;
+      if (ch === ' ')  n++;
       else if (ch === '\t') n += 2;
       else break;
     }
     return n;
   }
 
-  const nodes = lines.map(l => ({ label: l.trim(), indent: getIndent(l), children: [] }));
+  let firstItem = true;
+  let lastNonDashIndent = 0;
+  const nodes = [];
+
+  for (const line of rawLines) {
+    const rawIndent = countIndent(line);
+    const trimmed = line.trimStart();
+
+    let label, effectiveIndent;
+
+    // Dash prefix: -PageName or - PageName (but not -- which may be a comment)
+    const dashMatch = /^-(?!-)(.+)/.exec(trimmed);
+    if (dashMatch) {
+      label = dashMatch[1].trim();
+      effectiveIndent = lastNonDashIndent + 2;
+    } else {
+      label = trimmed;
+      if (firstItem || rawIndent > 0) {
+        // First item (root) keeps its indent; indented items keep their indent
+        effectiveIndent = rawIndent;
+        firstItem = false;
+      } else {
+        // Subsequent top-level items (indent=0) become direct children of root
+        effectiveIndent = 2;
+      }
+      lastNonDashIndent = effectiveIndent;
+    }
+
+    nodes.push({ label, indent: effectiveIndent, children: [] });
+  }
 
   // Build tree via stack
   const root = { label: '__root__', indent: -1, children: [] };
@@ -633,21 +675,12 @@ function parsePages(text) {
     node.children.forEach(c => assignDepth(c, depth + 1));
   }
 
-  const topLevelChildren = root.children;
-  if (!topLevelChildren.length) return null;
+  const topLevel = root.children;
+  if (!topLevel.length) return null;
 
-  // If single root item treat it as root
-  let treeRoot;
-  if (topLevelChildren.length === 1) {
-    treeRoot = topLevelChildren[0];
-    assignDepth(treeRoot, 0);
-  } else {
-    // Wrap everything under a virtual root
-    treeRoot = { label: 'Site', indent: -1, children: topLevelChildren, depth: 0 };
-    topLevelChildren.forEach(c => assignDepth(c, 1));
-    treeRoot.depth = 0;
-  }
-
+  // First item is always the root
+  const treeRoot = topLevel[0];
+  assignDepth(treeRoot, 0);
   return treeRoot;
 }
 
@@ -671,7 +704,7 @@ function layoutTree(root, boxW, boxH, hGap, vGap) {
     node.children.forEach(assignX);
     const totalW = node.children.reduce((s, c) => s + c.subtreeW, 0);
     node.subtreeW = Math.max(totalW, hStep);
-    node.relX = 0; // will center over children
+    node.relX = 0;
   }
 
   function assignAbsX(node, offsetX) {
@@ -684,7 +717,6 @@ function layoutTree(root, boxW, boxH, hGap, vGap) {
       assignAbsX(c, cx);
       cx += c.subtreeW;
     });
-    // center parent over children
     const firstX = node.children[0].x;
     const lastX  = node.children[node.children.length - 1].x;
     node.x = (firstX + lastX) / 2;
@@ -783,8 +815,8 @@ function drawSitemap() {
   const title    = document.getElementById('sitemapTitle').value.trim();
   const boxW     = parseInt(document.getElementById('boxWidth').value)   || 150;
   const boxH     = parseInt(document.getElementById('boxHeight').value)  || 46;
-  const hGap     = parseInt(document.getElementById('hSpacing').value)   || 24;
-  const vGap     = parseInt(document.getElementById('vSpacing').value)   || 70;
+  const hGap     = parseInt(document.getElementById('hSpacing').value)   || 16;
+  const vGap     = parseInt(document.getElementById('vSpacing').value)   || 60;
   const boxStyle = document.getElementById('boxStyle').value;
   const lineStyle= document.getElementById('lineStyle').value;
   const fontFam  = document.getElementById('fontFamily').value;
@@ -814,7 +846,7 @@ function drawSitemap() {
   const minY = Math.min(...allNodes.map(n => n.y));
   const maxY = Math.max(...allNodes.map(n => n.y + boxH));
 
-  const PAD   = 48;
+  const PAD     = 48;
   const TITLE_H = title ? 56 : 20;
   const LEGEND_H = 36 + (depth + 1) * 24;
 
@@ -828,13 +860,23 @@ function drawSitemap() {
 
   ctx.scale(zoomLevel, zoomLevel);
 
-  // Background
-  ctx.fillStyle = '#ffffff';
+  // Dark background
+  ctx.fillStyle = '#13161f';
   ctx.fillRect(0, 0, canvasW, canvasH);
+
+  // Subtle grid pattern on canvas
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (let gx = 0; gx < canvasW; gx += 24) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvasH); ctx.stroke();
+  }
+  for (let gy = 0; gy < canvasH; gy += 24) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvasW, gy); ctx.stroke();
+  }
 
   // Title
   if (title) {
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = '#f1f5f9';
     ctx.font = `700 20px ${fontFam}`;
     ctx.textAlign = 'center';
     ctx.fillText(title, canvasW / 2, PAD + 8);
@@ -850,7 +892,7 @@ function drawSitemap() {
       const py = node.y  + offsetY;
       const cx = child.x + offsetX;
       const cy = child.y + offsetY;
-      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#b0bec5');
+      drawConnector(ctx, px, py, cx, cy, boxH, lineStyle, '#374151');
       drawLines(child);
     });
   }
@@ -864,19 +906,19 @@ function drawSitemap() {
     const bgColor  = getColor(node.depth);
     const txtColor = getTextColor(node.depth);
 
-    // Shadow
+    // Glow / shadow
     ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.12)';
-    ctx.shadowBlur  = 6;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = bgColor;
+    ctx.shadowBlur  = 10;
+    ctx.shadowOffsetY = 0;
 
     ctx.fillStyle = bgColor;
     drawRoundedRect(ctx, x, y, boxW, boxH, r);
     ctx.fill();
     ctx.restore();
 
-    // Border
-    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    // Inner border
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     ctx.lineWidth = 1;
     drawRoundedRect(ctx, x, y, boxW, boxH, r);
     ctx.stroke();
@@ -911,7 +953,7 @@ function drawSitemap() {
   const totalLegW = numColors * 150;
   let legX = (canvasW - totalLegW) / 2;
 
-  ctx.fillStyle = '#718096';
+  ctx.fillStyle = '#4b5563';
   ctx.font = `600 10px ${fontFam}`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
@@ -923,12 +965,12 @@ function drawSitemap() {
     ctx.fillStyle = getColor(i);
     drawRoundedRect(ctx, legX, iy, swW, swH, r2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
     ctx.lineWidth = 1;
     drawRoundedRect(ctx, legX, iy, swW, swH, r2);
     ctx.stroke();
 
-    ctx.fillStyle = '#4a5568';
+    ctx.fillStyle = '#9ca3af';
     ctx.font = `500 10.5px ${fontFam}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
@@ -960,12 +1002,11 @@ function exportJPG() {
     showError('Generate a sitemap first before exporting.');
     return;
   }
-  // Create an offscreen canvas with white background (JPG doesn't support alpha)
   const off = document.createElement('canvas');
   off.width  = canvas.width;
   off.height = canvas.height;
   const oc = off.getContext('2d');
-  oc.fillStyle = '#ffffff';
+  oc.fillStyle = '#13161f';
   oc.fillRect(0, 0, off.width, off.height);
   oc.drawImage(canvas, 0, 0);
 
@@ -991,7 +1032,10 @@ function fitToWindow() {
   const availW = scroll.clientWidth  - 48;
   const availH = scroll.clientHeight - 48;
   const fitZ = Math.min(availW / canvasW, availH / canvasH, 1);
-  setZoom(Math.round(fitZ * 20) / 20);
+  // Apply zoom without triggering another regenerate loop
+  zoomLevel = Math.max(0.25, Math.round(fitZ * 20) / 20);
+  document.getElementById('zoomLabel').textContent = Math.round(zoomLevel * 100) + '%';
+  regenerate();
 }
 
 document.getElementById('zoomIn') .addEventListener('click', () => setZoom(zoomLevel + 0.1));
@@ -1014,8 +1058,8 @@ function resetDefaults() {
   document.getElementById('sitemapTitle').value = 'Website Sitemap';
   document.getElementById('boxWidth').value    = 150;
   document.getElementById('boxHeight').value   = 46;
-  document.getElementById('hSpacing').value    = 24;
-  document.getElementById('vSpacing').value    = 70;
+  document.getElementById('hSpacing').value    = 16;
+  document.getElementById('vSpacing').value    = 60;
   document.getElementById('boxStyle').value    = 'rounded';
   document.getElementById('lineStyle').value   = 'elbow';
   document.getElementById('fontFamily').value  = "'Segoe UI', Arial, sans-serif";
@@ -1024,12 +1068,16 @@ function resetDefaults() {
   zoomLevel = 1;
   document.getElementById('zoomLabel').textContent = '100%';
   regenerate();
+  fitToWindow();
 }
 
 /* ═══════════════════════════════════════════════════
    Wire up buttons
 ═══════════════════════════════════════════════════ */
-document.getElementById('generateBtn').addEventListener('click', regenerate);
+document.getElementById('generateBtn').addEventListener('click', () => {
+  regenerate();
+  fitToWindow();
+});
 document.getElementById('exportBtn')  .addEventListener('click', exportJPG);
 document.getElementById('resetBtn')   .addEventListener('click', resetDefaults);
 
@@ -1044,10 +1092,11 @@ canvas.style.display = 'none';
 buildColorPickers(3);
 buildLegend(3);
 
-// Auto-generate on load
+// Auto-generate on load and fit to window
 window.addEventListener('load', () => {
   document.getElementById('pagesInput').value = DEFAULT_INPUT;
   regenerate();
+  fitToWindow();
 });
 </script>
 </body>
